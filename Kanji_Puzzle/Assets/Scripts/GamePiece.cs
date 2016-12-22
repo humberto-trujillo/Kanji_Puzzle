@@ -7,12 +7,22 @@ public class GamePiece : MonoBehaviour
     public int xIndex;
     public int yIndex;
 	bool m_isMoving = false;
+	public InterpType interpolation = InterpType.SmootherStep;
+
+	public enum InterpType
+	{
+		Linear,
+		EaseOut,
+		EaseIn,
+		SmoothStep,
+		SmootherStep
+	}
 
 	void Update()
 	{
 		if(Input.GetKeyDown(KeyCode.RightArrow))
 		{
-			Move((int)transform.position.x + 1,(int)transform.position.y,0.2f);
+			Move((int)transform.position.x + 1,(int)transform.position.y,0.5f);
 		}
 		if(Input.GetKeyDown(KeyCode.LeftArrow))
 		{
@@ -50,6 +60,23 @@ public class GamePiece : MonoBehaviour
 			}
 			elapsedTime += Time.deltaTime;
 			float t = Mathf.Clamp(elapsedTime / timeToMove,0f,1f);
+			switch (interpolation) 
+			{
+				case InterpType.Linear:
+					break;
+				case InterpType.EaseOut:
+					t = Mathf.Sin(t * Mathf.PI * 0.5f);
+					break;
+				case InterpType.EaseIn:
+					t = 1 - Mathf.Cos(t * Mathf.PI * 0.5f);
+					break;
+				case InterpType.SmoothStep:
+					t = t*t*(3-2*t);
+					break;
+				case InterpType.SmootherStep:
+					t = t*t*t*(t*(t*6-15)+10);
+					break;
+			}
 			transform.position =Vector3.Lerp(startPosition,destination,t);
 			yield return null;
 		}
