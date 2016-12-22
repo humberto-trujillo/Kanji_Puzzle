@@ -25,7 +25,7 @@ public class Board : MonoBehaviour {
 
 		SetupTiles();
 		SetupCamera();
-		FillRandom();
+		FillBoard();
 		//HighlightMatches();
 	}
 
@@ -85,22 +85,50 @@ public class Board : MonoBehaviour {
 		return (x >= 0 && x < width && y >= 0 && y < height);
 	}
 
-	void FillRandom()
+	void FillRandomAt (int x, int y)
+	{
+		GameObject randomPiece = Instantiate (GetRandomGamePiece (), Vector3.zero, Quaternion.identity) as GameObject;
+		if (randomPiece != null) 
+		{
+			randomPiece.GetComponent<GamePiece> ().Init (this);
+			PlaceGamePiece (randomPiece.GetComponent<GamePiece> (), x, y);
+			randomPiece.transform.parent = transform;
+		}
+	}
+
+	void FillBoard()
 	{
 		for (int i = 0; i < width; i++)
 		{
 			for (int j = 0; j < height; j++)
 			{
-				GameObject randomPiece = Instantiate(GetRandomGamePiece(), Vector3.zero, Quaternion.identity) as GameObject;
-
-				if (randomPiece !=null)
-				{
-					randomPiece.GetComponent<GamePiece>().Init(this);
-					PlaceGamePiece(randomPiece.GetComponent<GamePiece>(), i, j);
-					randomPiece.transform.parent = transform;
-				}
+				FillRandomAt (i,j);
 			}
 		}
+
+		int maxIterations = 100;
+		int iterations = 0;
+		bool isFilled = false;
+		while (!isFilled)
+		{
+			List<GamePiece> matches = FindAllMatches ();
+			if (matches.Count == 0)
+			{
+				isFilled = true;
+				break;
+			}
+			else
+			{
+				ReplaceWithRandom (matches);
+			}
+			if (iterations > maxIterations)
+			{
+				isFilled = true;
+				Debug.LogWarning ("BOARD.FillBoard max iterations reached! Aborting...");
+			}
+			iterations++;
+		}
+		//Debug.Log ("Iterations: "+iterations);
 	}
 
 	public void ClickTile(Tile tile)
@@ -151,19 +179,19 @@ public class Board : MonoBehaviour {
 			List<GamePiece> clickedPieceMatches = FindMatchesAt(clickedTile.xIndex, clickedTile.yIndex);
 			List<GamePiece> targetPieceMatches = FindMatchesAt(targetTile.xIndex, targetTile.yIndex);
 
-			if (targetPieceMatches.Count == 0 && clickedPieceMatches.Count == 0)
-			{
-				clickedPiece.Move(clickedTile.xIndex, clickedTile.yIndex,swapTime);
-				targetPiece.Move(targetTile.xIndex, targetTile.yIndex,swapTime);
+			if (targetPieceMatches.Count == 0 && clickedPieceMatches.Count == 0) {
+				clickedPiece.Move (clickedTile.xIndex, clickedTile.yIndex, swapTime);
+				targetPiece.Move (targetTile.xIndex, targetTile.yIndex, swapTime);
 			}
-
-			yield return new WaitForSeconds(swapTime);
-
-			HighlightMatchesAt(clickedTile.xIndex,clickedTile.yIndex);
-			HighlightMatchesAt(targetTile.xIndex,targetTile.yIndex);
+			else
+			{
+				yield return new WaitForSeconds(swapTime);
+				ClearPieceAt (clickedPieceMatches);
+				ClearPieceAt (targetPieceMatches);
+				//HighlightMatchesAt(clickedTile.xIndex,clickedTile.yIndex);
+				//HighlightMatchesAt(targetTile.xIndex,targetTile.yIndex);
+			}
 		}
-
-
 	}
 
 	bool IsNextTo(Tile start, Tile end)
@@ -218,15 +246,20 @@ public class Board : MonoBehaviour {
 			}
 
 			GamePiece nextPiece = m_allGamePieces[nextX, nextY];
-
-			if (nextPiece.matchValue == startPiece.matchValue && !matches.Contains(nextPiece))
-			{
-				matches.Add(nextPiece);
-			}
-
+			if (nextPiece == null) {
+				break;
+			} 
 			else
 			{
-				break;
+				if (nextPiece.matchValue == startPiece.matchValue && !matches.Contains(nextPiece))
+				{
+					matches.Add(nextPiece);
+				}
+
+				else
+				{
+					break;
+				}
 			}
 		}
 
@@ -331,6 +364,59 @@ public class Board : MonoBehaviour {
 				HighlightMatchesAt (i,j);
 
 			}
+		}
+	}
+
+	void ClearPieceAt(int x, int y)
+	{
+		GamePiece pieceToClear = m_allGamePieces [x, y];
+		if (pieceToClear != null)
+		{
+			m_allGamePieces [x, y] = null;
+			Destroy (pieceToClear.gameObject);
+		}
+		HighlightTileOff (x, y);
+	}
+
+	void ClearBoard()
+	{
+		for (int i = 0; i < width; i++)
+		{
+			for (int j = 0; j < height; j++) 
+			{
+				ClearPieceAt (i, j);	
+			}	
+		}
+	}
+
+	void ClearPieceAt(List<GamePiece> gamePieces)
+	{
+		foreach (var piece in gamePieces) 
+		{
+			ClearPieceAt (piece.xIndex,piece.yIndex);
+		}
+	}
+
+	List<GamePiece> FindAllMatches()
+	{
+		List<GamePiece> combinedmatches = new List<GamePiece>();
+		for (int i = 0; i < width; i++)
+		{
+			for (int j = 0; j < height; j++)
+			{
+				var matches = FindMatchesAt(i,j);
+				combinedmatches = combinedmatches.Union(matches).ToList();
+			}	
+		}
+		return combinedmatches;
+	}
+
+	void ReplaceWithRandom(List<GamePiece> gamePieces)
+	{
+		foreach (var piece in gamePieces) 
+		{
+			ClearPieceAt (piece.xIndex, piece.yIndex);
+			FillRandomAt (piece.xIndex, piece.yIndex);
 		}
 	}
 }
