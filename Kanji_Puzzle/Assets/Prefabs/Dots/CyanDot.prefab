@@ -54,6 +54,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   xIndex: 0
   yIndex: 0
+  interpolation: 4
+  matchValue: 1
 --- !u!212 &212662975035443126
 SpriteRenderer:
   m_ObjectHideFlags: 1
