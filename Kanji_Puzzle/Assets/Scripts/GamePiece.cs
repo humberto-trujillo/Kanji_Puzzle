@@ -7,8 +7,6 @@ public class GamePiece : MonoBehaviour
     public int xIndex;
     public int yIndex;
 	public InterpType interpolation = InterpType.SmootherStep;
-	bool m_isMoving = false;
-	Board m_board;
 
 	public enum InterpType
 	{
@@ -18,6 +16,23 @@ public class GamePiece : MonoBehaviour
 		SmoothStep,
 		SmootherStep
 	}
+
+	public MatchValue matchValue;
+
+	public enum MatchValue
+	{
+		Blue,
+		Cyan,
+		Green,
+		Magenta,
+		Red,
+		Teal,
+		Yellow,
+		Wild
+	}
+
+	bool m_isMoving = false;
+	Board m_board;
 
 	void Update()
 	{

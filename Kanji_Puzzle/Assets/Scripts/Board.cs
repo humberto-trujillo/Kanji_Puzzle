@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class Board : MonoBehaviour
 {
@@ -139,5 +140,49 @@ public class Board : MonoBehaviour
 			return true;
 		}
 		return false;
+	}
+
+	List<GamePiece> FindMatches(int startX, int startY, Vector2 searchDirection, int minLength = 3)
+	{
+		List<GamePiece> matches = new List<GamePiece>();
+		GamePiece startPiece = null;
+		if(isWithinBounds(startX,startY))
+		{
+			startPiece = m_allGamePieces[startX,startY];
+		}
+		if(startPiece != null)
+		{
+			matches.Add(startPiece);
+		}
+		else
+		{
+			return null;
+		}
+		int nextX;
+		int nextY;
+		int maxValue = (width > height)?width: height;
+		for (int i = 1; i < maxValue - 1; i++)
+		{
+			nextX = startX + (int) Mathf.Clamp(searchDirection.x,-1,1) * i;
+			nextY = startY + (int) Mathf.Clamp(searchDirection.y,-1,1) * i;
+			if(!isWithinBounds(nextX,nextY))
+			{
+				break;
+			}
+			GamePiece nextPiece = m_allGamePieces[nextX,nextY];
+			if(nextPiece.matchValue == startPiece.matchValue && !matches.Contains(nextPiece))
+			{
+				matches.Add(nextPiece);
+			}
+			else
+			{
+				break;
+			}
+			if(matches.Count >= minLength)
+			{
+				return matches;
+			}
+		}
+		return null;
 	}
 }
