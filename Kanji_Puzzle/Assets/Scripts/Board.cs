@@ -7,10 +7,13 @@ public class Board : MonoBehaviour
 	public int height;
 	public GameObject tilePrefab;
     public GameObject[] gamePiecePrefabs;
+	public int borderSize;
 
 	Tile[,] m_allTiles;
     GamePiece[,] m_allGamePieces;
-	public int borderSize;
+	Tile m_clickedTile;
+	Tile m_targetTile;
+
 
 	void Start ()
 	{
@@ -76,4 +79,34 @@ public class Board : MonoBehaviour
             }
         }
     }
+
+	public void ClickTile(Tile tile)
+	{
+		if(m_clickedTile == null)
+		{
+			m_clickedTile = tile;
+		}
+	}
+
+	public void DragToTile(Tile tile)
+	{
+		if(m_clickedTile != null)
+		{
+			m_targetTile = tile;
+		}
+	}
+
+	public void ReleaseTile()
+	{
+		if(m_clickedTile != null && m_targetTile != null)
+		{
+			SwitchTile(m_clickedTile,m_targetTile);
+		}
+	}
+
+	void SwitchTile(Tile clickedTile, Tile targetTile)
+	{
+		m_clickedTile = null;
+		m_targetTile = null;
+	}
 }
