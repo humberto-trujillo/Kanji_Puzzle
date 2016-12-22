@@ -6,8 +6,9 @@ public class GamePiece : MonoBehaviour
 {
     public int xIndex;
     public int yIndex;
-	bool m_isMoving = false;
 	public InterpType interpolation = InterpType.SmootherStep;
+	bool m_isMoving = false;
+	Board m_board;
 
 	public enum InterpType
 	{
@@ -28,6 +29,11 @@ public class GamePiece : MonoBehaviour
 		{
 			Move((int)transform.position.x - 1,(int)transform.position.y,0.5f);
 		}
+	}
+
+	public void Init(Board board)
+	{
+		m_board = board;
 	}
 
     public void SetCoord(int x, int y)
@@ -54,8 +60,12 @@ public class GamePiece : MonoBehaviour
 			if(Vector3.Distance(transform.position,destination)<0.01f)
 			{
 				reachedDestination = true;
-				transform.position = destination;
-				SetCoord((int)destination.x,(int)destination.y);
+				/*transform.position = destination;
+				SetCoord((int)destination.x,(int)destination.y);*/
+				if(m_board != null)
+				{
+					m_board.PlaceGamePiece(this,(int)destination.x,(int)destination.y);
+				}
 				break;
 			}
 			elapsedTime += Time.deltaTime;

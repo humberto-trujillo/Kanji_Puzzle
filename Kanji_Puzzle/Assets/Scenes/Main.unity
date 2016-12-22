@@ -278,6 +278,7 @@ MonoBehaviour:
   - {fileID: 1798160458653020, guid: 7335d6cfa7024ec48bc8d64050d198fe, type: 2}
   - {fileID: 1082538499998946, guid: 4ad1d66a07294f84eb667432a7056464, type: 2}
   borderSize: 2
+  swapTime: 0.3
 --- !u!4 &639516370
 Transform:
   m_ObjectHideFlags: 0
