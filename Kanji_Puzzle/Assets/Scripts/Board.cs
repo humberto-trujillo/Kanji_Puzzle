@@ -26,7 +26,7 @@ public class Board : MonoBehaviour {
 
 		SetupTiles();
 		SetupCamera();
-		FillBoard();
+		FillBoard (10,0.5f);
 		//HighlightMatches();
 	}
 
@@ -86,28 +86,47 @@ public class Board : MonoBehaviour {
 		return (x >= 0 && x < width && y >= 0 && y < height);
 	}
 
-	void FillRandomAt (int x, int y)
+	GamePiece FillRandomAt (int x, int y, int falseYOffset = 0, float moveTime = 0.1f)
 	{
 		GameObject randomPiece = Instantiate (GetRandomGamePiece (), Vector3.zero, Quaternion.identity) as GameObject;
 		if (randomPiece != null) 
 		{
 			randomPiece.GetComponent<GamePiece> ().Init (this);
 			PlaceGamePiece (randomPiece.GetComponent<GamePiece> (), x, y);
+			if(falseYOffset != 0)
+			{
+				randomPiece.transform.position = new Vector3(x,y+falseYOffset,0);
+				randomPiece.GetComponent<GamePiece>().Move(x,y,moveTime);
+			}
 			randomPiece.transform.parent = transform;
 		}
+		return randomPiece.GetComponent<GamePiece>();
 	}
 
-	void FillBoard()
+	void FillBoard(int falseYOffset = 0, float moveTime = 0.1f)
 	{
+		List<GamePiece> addedPieces = new List<GamePiece>();
 		for (int i = 0; i < width; i++)
 		{
 			for (int j = 0; j < height; j++)
 			{
-				FillRandomAt (i,j);
+				if(m_allGamePieces[i,j] == null)
+				{
+					if(falseYOffset == 0)
+					{
+						GamePiece piece = FillRandomAt (i,j);
+						addedPieces.Add(piece);
+					}
+					else
+					{
+						GamePiece piece = FillRandomAt (i,j,falseYOffset,moveTime);
+						addedPieces.Add(piece);
+					}
+				}
 			}
 		}
 
-		int maxIterations = 100;
+		int maxIterations = 50;
 		int iterations = 0;
 		bool isFilled = false;
 		while (!isFilled)
@@ -120,7 +139,15 @@ public class Board : MonoBehaviour {
 			}
 			else
 			{
-				ReplaceWithRandom (matches);
+				matches = matches.Intersect(addedPieces).ToList();
+				if(falseYOffset == 0)
+				{
+					ReplaceWithRandom (matches);
+				}
+				else
+				{
+					ReplaceWithRandom (matches, falseYOffset, moveTime);
+				}
 			}
 			if (iterations > maxIterations)
 			{
@@ -447,12 +474,19 @@ public class Board : MonoBehaviour {
 		return combinedmatches;
 	}
 
-	void ReplaceWithRandom(List<GamePiece> gamePieces)
+	void ReplaceWithRandom(List<GamePiece> gamePieces, int falseYOffset = 0, float moveTime = 0.1f)
 	{
 		foreach (var piece in gamePieces) 
 		{
 			ClearPieceAt (piece.xIndex, piece.yIndex);
-			FillRandomAt (piece.xIndex, piece.yIndex);
+			if(falseYOffset == 0)
+			{
+				FillRandomAt (piece.xIndex, piece.yIndex);
+			}
+			else
+			{
+				FillRandomAt (piece.xIndex, piece.yIndex, falseYOffset, moveTime);
+			}
 		}
 	}
 
@@ -515,9 +549,16 @@ public class Board : MonoBehaviour {
 	IEnumerator ClearAndRefillBoardRoutine(List<GamePiece> gamePieces)
 	{
 		m_playerInputEnable = false;
-		yield return StartCoroutine(ClearAndCollapseRoutine(gamePieces));
-		yield return null;
-		yield return StartCoroutine(RefillRoutine());
+		List<GamePiece> matches = gamePieces;
+		do
+		{
+			yield return StartCoroutine(ClearAndCollapseRoutine(matches));
+			yield return null;
+			yield return StartCoroutine(RefillRoutine());
+			matches = FindAllMatches();
+			yield return new WaitForSeconds(0.5f);
+		}
+		while(matches.Count != 0);
 		m_playerInputEnable = true;
 	}
 
@@ -554,6 +595,7 @@ public class Board : MonoBehaviour {
 
 	IEnumerator RefillRoutine()
 	{
+		FillBoard (10,0.5f);
 		yield return null;
 	}
 	bool IsCollapsed(List<GamePiece> gamePieces)
