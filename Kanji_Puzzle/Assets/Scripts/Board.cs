@@ -186,13 +186,17 @@ public class Board : MonoBehaviour {
 			else
 			{
 				yield return new WaitForSeconds(swapTime);
-				ClearPieceAt (clickedPieceMatches);
-				ClearPieceAt (targetPieceMatches);
+				#region Old ClearPieceAt method call 
+				//ClearPieceAt (clickedPieceMatches);
+				//ClearPieceAt (targetPieceMatches);
 
-				CollapseColumn(clickedPieceMatches);
-				CollapseColumn(targetPieceMatches);
+				//CollapseColumn(clickedPieceMatches);
+				//CollapseColumn(targetPieceMatches);
+
 				//HighlightMatchesAt(clickedTile.xIndex,clickedTile.yIndex);
 				//HighlightMatchesAt(targetTile.xIndex,targetTile.yIndex);
+				#endregion
+				ClearAndRefillBoard(clickedPieceMatches.Union(targetPieceMatches).ToList());
 			}
 		}
 	}
@@ -335,6 +339,17 @@ public class Board : MonoBehaviour {
 		return combinedMatches;
 	}
 
+	List<GamePiece> FindMatchesAt (List<GamePiece> gamePieces, int minLength = 3)
+	{
+		List<GamePiece> matches = new List<GamePiece>();
+
+		foreach (GamePiece piece in gamePieces)
+		{
+			matches = matches.Union(FindMatchesAt(piece.xIndex, piece.yIndex, minLength)).ToList();
+		}
+		return matches;
+	}
+
 	void HighlightTileOff(int x, int y)
 	{
 		SpriteRenderer spriteRenderer = m_allTiles[x,y].GetComponent<SpriteRenderer>();
@@ -370,6 +385,17 @@ public class Board : MonoBehaviour {
 		}
 	}
 
+	void HighLightPieces(List<GamePiece> gamePieces)
+	{
+		foreach (var piece in gamePieces) 
+		{
+			if(piece != null)
+			{
+				HighlightTileOn(piece.xIndex,piece.yIndex,piece.GetComponent<SpriteRenderer>().color);
+			}	
+		}
+	}
+
 	void ClearPieceAt(int x, int y)
 	{
 		GamePiece pieceToClear = m_allGamePieces [x, y];
@@ -396,7 +422,10 @@ public class Board : MonoBehaviour {
 	{
 		foreach (var piece in gamePieces) 
 		{
-			ClearPieceAt (piece.xIndex,piece.yIndex);
+			if(piece != null)
+			{
+				ClearPieceAt (piece.xIndex,piece.yIndex);
+			}
 		}
 	}
 
@@ -472,5 +501,49 @@ public class Board : MonoBehaviour {
 			}	
 		}
 		return columns;
+	}
+
+	void ClearAndRefillBoard(List<GamePiece> gamePieces)
+	{
+		StartCoroutine(ClearAndRefillBoardRoutine(gamePieces));
+	}
+
+	IEnumerator ClearAndRefillBoardRoutine(List<GamePiece> gamePieces)
+	{
+		yield return StartCoroutine(ClearAndCollapseRoutine(gamePieces));
+		yield return null;
+		yield return StartCoroutine(RefillRoutine());
+	}
+
+	IEnumerator ClearAndCollapseRoutine(List<GamePiece> gamePieces)
+	{
+		List<GamePiece> movingPieces = new List<GamePiece>();
+		List<GamePiece> matches = new List<GamePiece>();
+		HighLightPieces(gamePieces);
+		yield return new WaitForSeconds(0.25f);
+		bool isFinished = false;
+		while(!isFinished)
+		{
+			ClearPieceAt(gamePieces);
+			yield return new WaitForSeconds(0.25f);
+			movingPieces = CollapseColumn(gamePieces);
+			yield return new WaitForSeconds(0.25f);
+			matches = FindMatchesAt(movingPieces);
+			if(matches.Count == 0)
+			{
+				isFinished = true;
+				break;
+			}
+			else
+			{
+				yield return StartCoroutine(ClearAndCollapseRoutine(matches));
+			}
+		}
+		yield return null;
+	}
+
+	IEnumerator RefillRoutine()
+	{
+		yield return null;
 	}
 }
