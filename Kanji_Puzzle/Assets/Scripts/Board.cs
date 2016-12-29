@@ -8,9 +8,11 @@ public class Board : MonoBehaviour {
 	public int width;
 	public int height;
 	public int borderSize;
-	public GameObject tilePrefab;
+	public GameObject tileNormalPrefab;
+	public GameObject tileObstaclePrefab;
 	public GameObject[] gamePiecePrefabs;
 	public float swapTime = 0.5f;
+	public StartingTile[] startingTiles;
 
 	Tile[,] m_allTiles;
 	GamePiece[,] m_allGamePieces;
@@ -19,6 +21,15 @@ public class Board : MonoBehaviour {
 	Tile m_targetTile;
 
 	bool m_playerInputEnable = true;
+
+	[System.Serializable]
+	public class StartingTile
+	{
+		public GameObject tilePrefab;
+		public int x;
+		public int y;
+		public int z;
+	}
 	void Start () 
 	{
 		m_allTiles = new Tile[width,height];
@@ -30,17 +41,36 @@ public class Board : MonoBehaviour {
 		//HighlightMatches();
 	}
 
+	void MakeTile (GameObject prefab, int x, int y, int z = 0)
+	{
+		if(prefab != null)
+		{
+			GameObject tile = Instantiate (prefab, new Vector3 (x, y, z), Quaternion.identity) as GameObject;
+			tile.name = "Tile (" + x + "," + y + ")";
+			m_allTiles [x, y] = tile.GetComponent<Tile> ();
+			tile.transform.parent = transform;
+			m_allTiles [x, y].Init (x, y, this);
+		}
+		else
+		{
+			Debug.LogWarning("BOARD.MakeTile  invalid prefab!");
+		}
+	}
+
 	void SetupTiles()
 	{
+		foreach (StartingTile sTile in startingTiles) 
+		{
+			MakeTile(sTile.tilePrefab,sTile.x,sTile.y,sTile.z);	
+		}
 		for (int i = 0; i < width; i++)
 		{
 			for (int j = 0; j < height; j++)
 			{
-				GameObject tile = Instantiate (tilePrefab, new Vector3(i, j, 0), Quaternion.identity) as GameObject;
-				tile.name = "Tile (" + i + "," + j + ")";
-				m_allTiles[i,j] = tile.GetComponent<Tile>();
-				tile.transform.parent = transform;
-				m_allTiles[i,j].Init(i,j,this);
+				if(m_allTiles[i,j] == null)
+				{
+					MakeTile (tileNormalPrefab,i,j);	
+				}
 			}
 		}
 	}
@@ -110,7 +140,7 @@ public class Board : MonoBehaviour {
 		{
 			for (int j = 0; j < height; j++)
 			{
-				if(m_allGamePieces[i,j] == null)
+				if(m_allGamePieces[i,j] == null && m_allTiles[i,j].tileType != TileType.Obstacle)
 				{
 					if(falseYOffset == 0)
 					{
@@ -495,7 +525,7 @@ public class Board : MonoBehaviour {
 		List<GamePiece> movingPieces = new List<GamePiece>();
 		for (int i = 0; i < height - 1; i++)
 		{
-			if(m_allGamePieces[column,i] == null)
+			if(m_allGamePieces[column,i] == null && m_allTiles[column,i].tileType != TileType.Obstacle)
 			{
 				for (int j = i + 1; j < height; j++)
 				{
