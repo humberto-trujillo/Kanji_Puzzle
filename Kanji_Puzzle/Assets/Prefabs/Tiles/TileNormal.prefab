@@ -69,6 +69,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   xIndex: 0
   yIndex: 0
+  tileType: 0
+  breakableValue: 0
+  breakableSprites: []
+  normalColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!212 &212000013107521432
 SpriteRenderer:
   m_ObjectHideFlags: 1

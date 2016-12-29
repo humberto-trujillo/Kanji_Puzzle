@@ -413,14 +413,19 @@ public class Board : MonoBehaviour {
 
 	void HighlightTileOff(int x, int y)
 	{
-		SpriteRenderer spriteRenderer = m_allTiles[x,y].GetComponent<SpriteRenderer>();
-		spriteRenderer.color = new Color(spriteRenderer.color.r, spriteRenderer.color.g, spriteRenderer.color.b, 0);
+		if(m_allTiles[x,y].tileType != TileType.Breakable)
+		{
+			SpriteRenderer spriteRenderer = m_allTiles[x,y].GetComponent<SpriteRenderer>();
+			spriteRenderer.color = new Color(spriteRenderer.color.r, spriteRenderer.color.g, spriteRenderer.color.b, 0);
+		}
 	}
-
 	void HighlightTileOn(int x, int y, Color col)
 	{
-		SpriteRenderer spriteRenderer = m_allTiles[x,y].GetComponent<SpriteRenderer>();
-		spriteRenderer.color = col;
+		if(m_allTiles[x,y].tileType != TileType.Breakable)
+		{
+			SpriteRenderer spriteRenderer = m_allTiles[x,y].GetComponent<SpriteRenderer>();
+			spriteRenderer.color = col;
+		}
 	}
 
 	void HighlightMatchesAt (int x, int y)
@@ -487,6 +492,26 @@ public class Board : MonoBehaviour {
 			{
 				ClearPieceAt (piece.xIndex,piece.yIndex);
 			}
+		}
+	}
+
+	void BreakTileAt(int x, int y)
+	{
+		Tile tileToBreak = m_allTiles[x,y];
+		if(tileToBreak != null)
+		{
+			tileToBreak.BreakTile();
+		}
+	}
+
+	void BreakTileAt(List<GamePiece> pieces)
+	{
+		foreach (GamePiece piece in pieces)
+		{
+			if(piece != null)
+			{
+				BreakTileAt(piece.xIndex,piece.yIndex);
+			}	
 		}
 	}
 
@@ -602,6 +627,7 @@ public class Board : MonoBehaviour {
 		while(!isFinished)
 		{
 			ClearPieceAt(gamePieces);
+			BreakTileAt(gamePieces);
 			yield return new WaitForSeconds(0.25f);
 			movingPieces = CollapseColumn(gamePieces);
 			while(!IsCollapsed(gamePieces))
