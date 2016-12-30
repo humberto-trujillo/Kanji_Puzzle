@@ -297,12 +297,12 @@ MonoBehaviour:
       type: 2}
     x: 3
     y: 3
-    z: 0
+    z: 1
   - tilePrefab: {fileID: 1000012026151608, guid: 6d9995c14ce4f4f4e890413e16c64113,
       type: 2}
     x: 3
     y: 4
-    z: 0
+    z: 1
 --- !u!4 &639516370
 Transform:
   m_ObjectHideFlags: 0
