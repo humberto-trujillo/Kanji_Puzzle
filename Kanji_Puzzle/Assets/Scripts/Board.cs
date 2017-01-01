@@ -14,6 +14,7 @@ public class Board : MonoBehaviour {
 	public float swapTime = 0.5f;
 	public StartingTile[] startingTiles;
 
+
 	Tile[,] m_allTiles;
 	GamePiece[,] m_allGamePieces;
 
@@ -21,6 +22,7 @@ public class Board : MonoBehaviour {
 	Tile m_targetTile;
 
 	bool m_playerInputEnable = true;
+	ParticleManager m_particleManager;
 
 	[System.Serializable]
 	public class StartingTile
@@ -39,6 +41,7 @@ public class Board : MonoBehaviour {
 		SetupCamera();
 		FillBoard (10,0.5f);
 		//HighlightMatches();
+		m_particleManager = GameObject.FindGameObjectWithTag("ParticleManager").GetComponent<ParticleManager>();
 	}
 
 	void MakeTile (GameObject prefab, int x, int y, int z = 0)
@@ -470,7 +473,7 @@ public class Board : MonoBehaviour {
 			m_allGamePieces [x, y] = null;
 			Destroy (pieceToClear.gameObject);
 		}
-		HighlightTileOff (x, y);
+		//HighlightTileOff (x, y);
 	}
 
 	void ClearBoard()
@@ -491,6 +494,10 @@ public class Board : MonoBehaviour {
 			if(piece != null)
 			{
 				ClearPieceAt (piece.xIndex,piece.yIndex);
+				if(m_particleManager != null)
+				{
+					m_particleManager.ClearPieceFXAt(piece.xIndex,piece.yIndex);
+				}
 			}
 		}
 	}
@@ -498,8 +505,12 @@ public class Board : MonoBehaviour {
 	void BreakTileAt(int x, int y)
 	{
 		Tile tileToBreak = m_allTiles[x,y];
-		if(tileToBreak != null)
+		if(tileToBreak != null && tileToBreak.tileType == TileType.Breakable)
 		{
+			if(m_particleManager != null)
+			{
+				m_particleManager.BreakTileFXAt(tileToBreak.breakableValue,x,y,0);
+			}
 			tileToBreak.BreakTile();
 		}
 	}
@@ -611,7 +622,7 @@ public class Board : MonoBehaviour {
 			yield return null;
 			yield return StartCoroutine(RefillRoutine());
 			matches = FindAllMatches();
-			yield return new WaitForSeconds(0.5f);
+			yield return new WaitForSeconds(0.2f);
 		}
 		while(matches.Count != 0);
 		m_playerInputEnable = true;
@@ -621,8 +632,8 @@ public class Board : MonoBehaviour {
 	{
 		List<GamePiece> movingPieces = new List<GamePiece>();
 		List<GamePiece> matches = new List<GamePiece>();
-		HighLightPieces(gamePieces);
-		yield return new WaitForSeconds(0.5f);
+		//HighLightPieces(gamePieces);
+		yield return new WaitForSeconds(0.2f);
 		bool isFinished = false;
 		while(!isFinished)
 		{
@@ -634,7 +645,7 @@ public class Board : MonoBehaviour {
 			{
 				yield return null;
 			}
-			yield return new WaitForSeconds(0.5f);
+			yield return new WaitForSeconds(0.2f);
 			matches = FindMatchesAt(movingPieces);
 			if(matches.Count == 0)
 			{

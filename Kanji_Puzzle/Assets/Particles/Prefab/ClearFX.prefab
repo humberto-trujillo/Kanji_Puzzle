@@ -53,6 +53,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 4000012664856916}
+  - 114: {fileID: 114000012873172910}
   m_Layer: 0
   m_Name: ClearFX
   m_TagString: Untagged
@@ -132,6 +133,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 4000010687108182}
   m_RootOrder: 1
+--- !u!114 &114000012873172910
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000012918026374}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57aec6bfa94f04858878d9c1db7f9b35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  allParticles: []
+  lifetime: 1
 --- !u!198 &198000010232161364
 ParticleSystem:
   m_ObjectHideFlags: 1

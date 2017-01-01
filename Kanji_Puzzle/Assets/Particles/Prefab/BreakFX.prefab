@@ -36,6 +36,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 4000012297354658}
+  - 114: {fileID: 114000010709405112}
   m_Layer: 0
   m_Name: BreakFX
   m_TagString: Untagged
@@ -101,6 +102,19 @@ Transform:
   - {fileID: 4000010941933242}
   m_Father: {fileID: 4000012297354658}
   m_RootOrder: 0
+--- !u!114 &114000010709405112
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000011879060052}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57aec6bfa94f04858878d9c1db7f9b35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  allParticles: []
+  lifetime: 1
 --- !u!198 &198000010437704988
 ParticleSystem:
   m_ObjectHideFlags: 1
