@@ -660,6 +660,9 @@ public class Board : MonoBehaviour {
 		bool isFinished = false;
 		while(!isFinished)
 		{
+			List<GamePiece> bombedPieces = GetBombedPieces(gamePieces);
+			gamePieces = gamePieces.Union(bombedPieces).ToList();
+
 			ClearPieceAt(gamePieces);
 			BreakTileAt(gamePieces);
 			yield return new WaitForSeconds(0.25f);
@@ -702,5 +705,81 @@ public class Board : MonoBehaviour {
 			}
 		}
 		return true;
+	}
+
+	List<GamePiece> GetRowPieces(int row)
+	{
+		List<GamePiece> gamePieces = new List<GamePiece>();
+		for (int i = 0; i < width; i++)
+		{
+			if(m_allGamePieces[i,row] != null)
+			{
+				gamePieces.Add(m_allGamePieces[i,row]);
+			}
+		}
+		return gamePieces;
+	}
+
+	List<GamePiece> GetColumnPieces(int column)
+	{
+		List<GamePiece> gamePieces = new List<GamePiece>();
+		for (int i = 0; i < height; i++)
+		{
+			if(m_allGamePieces[column,i] != null)
+			{
+				gamePieces.Add(m_allGamePieces[column,i]);
+			}
+		}
+		return gamePieces;
+	}
+
+	List<GamePiece> GetAdjacentPieces(int x, int y, int offset = 1)
+	{
+		List<GamePiece> gamePieces = new List<GamePiece>();
+		for (int i = x - offset; i <= x + offset; i++) 
+		{
+			for (int j = y - offset; j <= y + offset; j++)
+			{
+				if(IsWithinBounds(i,j) && m_allGamePieces[i,j] != null)
+				{
+					gamePieces.Add(m_allGamePieces[i,j]);
+				}	
+			}	
+		}
+		return gamePieces;
+	}
+
+	List<GamePiece> GetBombedPieces(List<GamePiece> gamePieces)
+	{
+		List<GamePiece> allPiecesToClear = new List<GamePiece>();
+		foreach (GamePiece piece in gamePieces)
+		{
+			if(piece != null)
+			{
+				List<GamePiece> piecesToClear = new List<GamePiece>();
+				Bomb bomb = piece.GetComponent<Bomb>();
+				if(bomb != null)
+				{
+					switch (bomb.bombType) 
+					{
+						case BombType.Column:
+							piecesToClear = GetColumnPieces(bomb.xIndex);
+							break;
+						case BombType.Row:
+							piecesToClear = GetRowPieces(bomb.yIndex);
+							break;
+						case BombType.Adjacent:
+							piecesToClear = GetAdjacentPieces(bomb.xIndex, bomb.yIndex, 1);
+							break;
+						case BombType.Color:
+							break;
+						default:
+							break;
+					}
+					allPiecesToClear = allPiecesToClear.Union(piecesToClear).ToList();
+				}
+			}	
+		}
+		return allPiecesToClear;
 	}
 }

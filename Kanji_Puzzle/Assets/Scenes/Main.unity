@@ -285,15 +285,15 @@ MonoBehaviour:
   startingTiles: []
   startingGamePieces:
   - prefab: {fileID: 1375418582946574, guid: bd2768acfa6899f4d90c348e06b7c9ef, type: 2}
-    x: 0
+    x: 1
     y: 0
     z: 0
   - prefab: {fileID: 1375418582946574, guid: bd2768acfa6899f4d90c348e06b7c9ef, type: 2}
-    x: 0
+    x: 1
     y: 1
     z: 0
-  - prefab: {fileID: 1375418582946574, guid: bd2768acfa6899f4d90c348e06b7c9ef, type: 2}
-    x: 1
+  - prefab: {fileID: 1000011953467506, guid: 17b6afb3cfc9146e087642046b761acc, type: 2}
+    x: 2
     y: 2
     z: 0
   fillYOffset: 10
