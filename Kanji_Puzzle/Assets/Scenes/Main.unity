@@ -281,18 +281,32 @@ MonoBehaviour:
   - {fileID: 1109599703124206, guid: 60b1f11af565eb045aaa0ded22e354ff, type: 2}
   - {fileID: 1798160458653020, guid: 7335d6cfa7024ec48bc8d64050d198fe, type: 2}
   - {fileID: 1082538499998946, guid: 4ad1d66a07294f84eb667432a7056464, type: 2}
+  adjacentBombPrefab: {fileID: 1000011953467506, guid: 17b6afb3cfc9146e087642046b761acc,
+    type: 2}
+  columnBombPrefab: {fileID: 1000010216108324, guid: a1baaf36a75c04917acc3285fa3e30b9,
+    type: 2}
+  rowBombPrefab: {fileID: 1000013514097414, guid: e89d8248b911045a59eb12601c9b4624,
+    type: 2}
   swapTime: 0.3
   startingTiles: []
   startingGamePieces:
   - prefab: {fileID: 1375418582946574, guid: bd2768acfa6899f4d90c348e06b7c9ef, type: 2}
-    x: 1
+    x: 0
     y: 0
     z: 0
   - prefab: {fileID: 1375418582946574, guid: bd2768acfa6899f4d90c348e06b7c9ef, type: 2}
-    x: 1
+    x: 0
     y: 1
     z: 0
-  - prefab: {fileID: 1000011953467506, guid: 17b6afb3cfc9146e087642046b761acc, type: 2}
+  - prefab: {fileID: 1375418582946574, guid: bd2768acfa6899f4d90c348e06b7c9ef, type: 2}
+    x: 0
+    y: 3
+    z: 0
+  - prefab: {fileID: 1375418582946574, guid: bd2768acfa6899f4d90c348e06b7c9ef, type: 2}
+    x: 1
+    y: 2
+    z: 0
+  - prefab: {fileID: 1375418582946574, guid: bd2768acfa6899f4d90c348e06b7c9ef, type: 2}
     x: 2
     y: 2
     z: 0
