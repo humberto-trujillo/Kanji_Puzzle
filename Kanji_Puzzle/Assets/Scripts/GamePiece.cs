@@ -107,4 +107,18 @@ public class GamePiece : MonoBehaviour
 		}
 		m_isMoving = false;
 	}
+
+	public void ChangeColor(GamePiece pieceToMatch)
+	{
+		SpriteRenderer rendererToChange = GetComponent<SpriteRenderer>();
+		if(pieceToMatch != null)
+		{
+			SpriteRenderer rendererToMatch = pieceToMatch.GetComponent<SpriteRenderer>();
+			if(rendererToChange != null && rendererToMatch != null)
+			{
+				rendererToChange.color = rendererToMatch.color;
+			}
+			matchValue = pieceToMatch.matchValue;
+		}
+	}
 }

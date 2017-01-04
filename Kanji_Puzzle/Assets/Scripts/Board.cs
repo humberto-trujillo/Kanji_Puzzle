@@ -305,6 +305,15 @@ public class Board : MonoBehaviour {
 					m_clickedTileBomb = DropBomb(clickedTile.xIndex,clickedTile.yIndex,swipeDirection,clickedPieceMatches);
 					m_targetTileBomb = DropBomb(targetTile.xIndex,targetTile.yIndex,swipeDirection,targetPieceMatches);
 
+					if(m_clickedTileBomb != null && targetPiece != null)
+					{
+						m_clickedTileBomb.GetComponent<GamePiece>().ChangeColor(targetPiece);
+					}
+					if(m_targetTileBomb != null && clickedPiece != null)
+					{
+						m_targetTileBomb.GetComponent<GamePiece>().ChangeColor(clickedPiece);
+					}
+
 					ClearAndRefillBoard(clickedPieceMatches.Union(targetPieceMatches).ToList());
 				}
 			}
