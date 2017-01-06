@@ -287,28 +287,30 @@ MonoBehaviour:
     type: 2}
   rowBombPrefab: {fileID: 1000013514097414, guid: e89d8248b911045a59eb12601c9b4624,
     type: 2}
+  colorBombPrefab: {fileID: 1000011284598344, guid: c899e3798005f4e078e416290fc3e340,
+    type: 2}
   swapTime: 0.3
   startingTiles: []
   startingGamePieces:
-  - prefab: {fileID: 1000011494205042, guid: fd27b09b492194debb8df2438529ca42, type: 2}
-    x: 3
+  - prefab: {fileID: 1082538499998946, guid: 4ad1d66a07294f84eb667432a7056464, type: 2}
+    x: 4
     y: 0
     z: 0
-  - prefab: {fileID: 1109599703124206, guid: 60b1f11af565eb045aaa0ded22e354ff, type: 2}
-    x: 3
+  - prefab: {fileID: 1082538499998946, guid: 4ad1d66a07294f84eb667432a7056464, type: 2}
+    x: 4
     y: 1
     z: 0
-  - prefab: {fileID: 1109599703124206, guid: 60b1f11af565eb045aaa0ded22e354ff, type: 2}
-    x: 3
-    y: 3
-    z: 0
-  - prefab: {fileID: 1109599703124206, guid: 60b1f11af565eb045aaa0ded22e354ff, type: 2}
-    x: 4
-    y: 2
-    z: 0
-  - prefab: {fileID: 1000011494205042, guid: fd27b09b492194debb8df2438529ca42, type: 2}
+  - prefab: {fileID: 1082538499998946, guid: 4ad1d66a07294f84eb667432a7056464, type: 2}
     x: 5
     y: 2
+    z: 0
+  - prefab: {fileID: 1082538499998946, guid: 4ad1d66a07294f84eb667432a7056464, type: 2}
+    x: 4
+    y: 3
+    z: 0
+  - prefab: {fileID: 1082538499998946, guid: 4ad1d66a07294f84eb667432a7056464, type: 2}
+    x: 4
+    y: 4
     z: 0
   fillYOffset: 10
   fillMoveTime: 0.5

@@ -2,6 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum MatchValue
+{
+	Blue,
+	Cyan,
+	Green,
+	Magenta,
+	Red,
+	Teal,
+	Yellow,
+	Wild
+}
 public class GamePiece : MonoBehaviour
 {
     public int xIndex;
@@ -18,18 +29,6 @@ public class GamePiece : MonoBehaviour
 	}
 
 	public MatchValue matchValue;
-
-	public enum MatchValue
-	{
-		Blue,
-		Cyan,
-		Green,
-		Magenta,
-		Red,
-		Teal,
-		Yellow,
-		Wild
-	}
 
 	bool m_isMoving = false;
 	Board m_board;
