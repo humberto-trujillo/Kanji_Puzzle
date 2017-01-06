@@ -451,6 +451,8 @@ MonoBehaviour:
     type: 2}
   doubleBreakFXPrefab: {fileID: 1000011334232948, guid: 5b252abdb90b14954b28ad19f79108c3,
     type: 2}
+  bombFXPrefab: {fileID: 1000010716259938, guid: ce5950d906e6145cb92978ef19517dcb,
+    type: 2}
 --- !u!4 &1704530866
 Transform:
   m_ObjectHideFlags: 0

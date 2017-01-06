@@ -543,7 +543,7 @@ public class Board : MonoBehaviour {
 		}
 	}
 
-	void ClearPieceAt(List<GamePiece> gamePieces)
+	void ClearPieceAt(List<GamePiece> gamePieces, List<GamePiece> bombedPieces)
 	{
 		foreach (var piece in gamePieces) 
 		{
@@ -552,7 +552,15 @@ public class Board : MonoBehaviour {
 				ClearPieceAt (piece.xIndex,piece.yIndex);
 				if(m_particleManager != null)
 				{
-					m_particleManager.ClearPieceFXAt(piece.xIndex,piece.yIndex);
+					if(bombedPieces.Contains(piece))
+					{
+						m_particleManager.BombFXAt(piece.xIndex,piece.yIndex);
+					}
+					else
+					{
+						m_particleManager.ClearPieceFXAt(piece.xIndex,piece.yIndex);
+				
+					}
 				}
 			}
 		}
@@ -699,7 +707,7 @@ public class Board : MonoBehaviour {
 			bombedPieces = GetBombedPieces(gamePieces);
 			gamePieces = gamePieces.Union(bombedPieces).ToList();
 
-			ClearPieceAt(gamePieces);
+			ClearPieceAt(gamePieces, bombedPieces);
 			BreakTileAt(gamePieces);
 
 			if(m_clickedTileBomb != null)
