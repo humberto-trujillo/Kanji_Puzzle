@@ -56,16 +56,16 @@ public class Board : MonoBehaviour {
 	{
 		m_allTiles = new Tile[width,height];
 		m_allGamePieces = new GamePiece[width,height];
-
-		SetupTiles();
-		SetupGamePieces();
-
-		collectibleCount = FindAllCollectibles().Count;
-
-		SetupCamera();
-		FillBoard (fillYOffset,fillMoveTime);
-		//HighlightMatches();
 		m_particleManager = GameObject.FindGameObjectWithTag("ParticleManager").GetComponent<ParticleManager>();
+	}
+
+	public void SetupBoard ()
+	{
+		SetupTiles ();
+		SetupGamePieces ();
+		collectibleCount = FindAllCollectibles ().Count;
+		SetupCamera ();
+		FillBoard (fillYOffset, fillMoveTime);
 	}
 
 	void MakeTile (GameObject prefab, int x, int y, int z = 0)

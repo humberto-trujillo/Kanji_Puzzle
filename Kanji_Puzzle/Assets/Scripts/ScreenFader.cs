@@ -18,7 +18,7 @@ public class ScreenFader : MonoBehaviour {
 	{
 		m_graphic = GetComponent<MaskableGraphic>();
 		m_color = m_graphic.color;
-		FadeOff();
+		//FadeOff();
 	}
 
 	IEnumerator FadeRoutine(float startAlpha,float endAlpha)
