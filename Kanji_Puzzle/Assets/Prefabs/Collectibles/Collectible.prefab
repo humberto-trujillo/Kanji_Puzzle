@@ -56,6 +56,7 @@ MonoBehaviour:
   yIndex: 0
   interpolation: 4
   matchValue: 8
+  scoreValue: 200
   clearedByBomb: 0
   clearedAtBottom: 1
 --- !u!212 &212000013060800776
