@@ -5,10 +5,11 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : Singleton<GameManager> 
 {
-	public int moveLeft = 30;
+	public int movesLeft = 30;
 	public int scoreGoal = 10000;
 	public ScreenFader screenFader;
 	public Text levelNameText;
+	public Text movesLeftText;
 	Board m_board;
 	bool m_isReadyToBegin = false;
 	bool m_isGameOver = false;
@@ -22,7 +23,16 @@ public class GameManager : Singleton<GameManager>
 		{
 			levelNameText.text = scene.name;
 		}
+		UpdateMoves();
 		StartCoroutine(ExecuteGameLoop());
+	}
+
+	public void UpdateMoves()
+	{
+		if(movesLeftText != null)
+		{
+			movesLeftText.text = movesLeft.ToString();
+		}
 	}
 
 	IEnumerator ExecuteGameLoop()
@@ -55,12 +65,21 @@ public class GameManager : Singleton<GameManager>
 	{
 		while(!m_isGameOver)
 		{
+			if(movesLeft == 0)
+			{
+				m_isGameOver = true;
+				m_isWinner = false;
+			}
 			yield return null;
 		}
 	}
 
 	IEnumerator EndGameRoutine()
 	{
+		if(screenFader != null)
+		{
+			screenFader.FadeOn();
+		}
 		if(m_isWinner)
 		{
 			Debug.Log("Win");

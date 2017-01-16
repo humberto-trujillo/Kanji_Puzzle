@@ -363,6 +363,11 @@ public class Board : MonoBehaviour {
 				}
 				else
 				{
+					if(GameManager.Instance != null)
+					{
+						GameManager.Instance.movesLeft--;
+						GameManager.Instance.UpdateMoves();
+					}
 					yield return new WaitForSeconds(swapTime);
 					#region Old ClearPieceAt method call 
 					//ClearPieceAt (clickedPieceMatches);
