@@ -36,6 +36,8 @@ public class GamePiece : MonoBehaviour
 	bool m_isMoving = false;
 	Board m_board;
 
+	public AudioClip clearSound;
+
 	void Update()
 	{
 		if(Input.GetKeyDown(KeyCode.RightArrow))
@@ -129,6 +131,14 @@ public class GamePiece : MonoBehaviour
 		if(ScoreManager.Instance != null)
 		{
 			ScoreManager.Instance.AddScore(scoreValue * multiplier + bonus);
+		}
+
+		if(SoundManager.Instance != null)
+		{
+			if(clearSound != null)
+			{
+				SoundManager.Instance.PlayClipAtPoint(clearSound,Vector3.zero,SoundManager.Instance.fxVolume);
+			}
 		}
 	}
 }
