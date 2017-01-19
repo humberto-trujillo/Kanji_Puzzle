@@ -238,8 +238,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b445ebf5f376449f1b0dc5f736b1e989, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movesLeft: 2
-  scoreGoal: 10000
+  movesLeft: 10
+  scoreGoal: 500
   screenFader: {fileID: 1922042404}
   levelNameText: {fileID: 1440259323}
   movesLeftText: {fileID: 649161827}
