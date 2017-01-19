@@ -195,6 +195,7 @@ Transform:
   - {fileID: 1704530866}
   - {fileID: 1626066008}
   - {fileID: 215054767}
+  - {fileID: 2070536430}
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -238,8 +239,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b445ebf5f376449f1b0dc5f736b1e989, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movesLeft: 10
-  scoreGoal: 500
+  movesLeft: 25
+  scoreGoal: 3000
   screenFader: {fileID: 1922042404}
   levelNameText: {fileID: 1440259323}
   movesLeftText: {fileID: 649161827}
@@ -1825,6 +1826,63 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2060425655}
+--- !u!1 &2070536429
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 2070536430}
+  - component: {fileID: 2070536431}
+  m_Layer: 0
+  m_Name: SoundManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2070536430
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2070536429}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 158275192}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2070536431
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2070536429}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d8be73340d554ea5af862cc9850b39d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  musicClips:
+  - {fileID: 8300000, guid: e75e89afb6e1648e7a4a2ac64328a7c0, type: 3}
+  - {fileID: 8300000, guid: e5e029a21fda14206a9ff1423a1302a9, type: 3}
+  winClips:
+  - {fileID: 8300000, guid: 5f9fb0bfcf06e4304aab13b97645fe13, type: 3}
+  - {fileID: 8300000, guid: b43b2e7180aa04f788c269504edc72de, type: 3}
+  loseClips:
+  - {fileID: 8300000, guid: ed4ad50d33af142e6be4b65f4d37e37c, type: 3}
+  bonusClips:
+  - {fileID: 8300000, guid: 56e813bd88354448fb9f0a52536449a1, type: 3}
+  - {fileID: 8300000, guid: eadcfb9a0c2cb4bea8112ac470640c8e, type: 3}
+  - {fileID: 8300000, guid: 6dce900c6b57748dbb2ee112588b2bd9, type: 3}
+  - {fileID: 8300000, guid: 6d894f08d52a44322a56f6afc48f59e0, type: 3}
+  musicVolume: 0.5
+  fxVolume: 1
+  lowPitch: 0.95
+  highPitch: 1.05
 --- !u!1 &2128719962
 GameObject:
   m_ObjectHideFlags: 0
