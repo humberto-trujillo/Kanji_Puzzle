@@ -739,8 +739,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   width: 7
-  height: 9
-  borderSize: 2
+  height: 7
+  borderSize: 1
   tileNormalPrefab: {fileID: 1000010683763984, guid: dc6209385cac6423a9beb5373d5b7815,
     type: 2}
   tileObstaclePrefab: {fileID: 1000012026151608, guid: 6d9995c14ce4f4f4e890413e16c64113,
