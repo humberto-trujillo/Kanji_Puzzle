@@ -52,6 +52,7 @@ public class Board : MonoBehaviour {
 		public int y;
 		public int z;
 	}
+
 	void Start () 
 	{
 		m_allTiles = new Tile[width,height];
